@@ -239,6 +239,7 @@
 				4B5620651D46F19F0027C182 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

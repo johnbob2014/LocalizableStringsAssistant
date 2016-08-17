@@ -90,16 +90,19 @@ int main(int argc, const char * argv[]) {
                 continue;
             }
             
-            // 只包含@" */"，说明该行包含一条comment，并且该comment在本行结束
+            // 只包含@" */"，说明该行包含一条重复的comment，并且该comment在本行结束，重复的comment以/分隔
             if (![aLine rangeOfString:@"/* "].length && [aLine rangeOfString:@" */"].length){
-                comment = [NSString stringWithFormat:@"%@ or %@",comment,[aLine stringByReplacingOccurrencesOfString:@" */" withString:@""]];
+                NSString *commentToAdd = [aLine stringByReplacingOccurrencesOfString:@" */" withString:@""];
+                commentToAdd = [commentToAdd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                comment = [NSString stringWithFormat:@"%@/%@",comment,commentToAdd];
                 commentHasReachEnd = YES;
                 continue;
             }
             
-            // comment没有结束，直接添加（没有结束的原因是一个key有2个或以上的comment）
+            // comment没有结束，说明该行包含一条重复的comment，直接添加（没有结束的原因是一个key有2个或以上的comment），重复的comment以/分隔
             if (!commentHasReachEnd) {
-                comment = [NSString stringWithFormat:@"%@ or %@",comment,[aLine stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+                NSString *commentToAdd = [aLine stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                comment = [NSString stringWithFormat:@"%@/%@",comment,commentToAdd];
                 continue;
             }
 
